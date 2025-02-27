@@ -45,12 +45,16 @@ Add the required logic below to complete the API.
 app.get('/assistant/greet' , (req,res) => {
   try {
     
+
+    // used req.query.name to extract name from the header/ link / name from URL
     const name = req.query.name;
 
     if(!name){
       return res.status(400).json({message :"Invalid name"})
     }
 
+
+    // Used tolocaldate.string fn there are more such function
     const   DayOfWeek = new Date().toLocaleDateString('en-US',{weekday : 'long'});
     let dayMessage;
     let welcomeMessage;
