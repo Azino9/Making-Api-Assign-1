@@ -1,0 +1,15 @@
+meta {
+  name: get request
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:9124/assistant/greet/?name=Mohit
+  body: json
+  auth: none
+}
+
+params:query {
+  name: Mohit
+}

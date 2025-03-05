@@ -41,48 +41,46 @@ Add the required logic below to complete the API.
 */
 
 
-
-app.get('/assistant/greet' , (req,res) => {
+app.get('/assistant/greet', (req,res) => {
+  const {name} = req.query;
   try {
-    
-
-    // used req.query.name to extract name from the header/ link / name from URL
-    const name = req.query.name;
-
-    if(!name){
-      return res.status(400).json({message :"Invalid name"})
-    }
-
-
-    // Used tolocaldate.string fn there are more such function
-    const   DayOfWeek = new Date().toLocaleDateString('en-US',{weekday : 'long'});
-    let dayMessage;
-    let welcomeMessage;
-
-    if(dayMessage == 'Monday')
-      {
-        dayMessage: "Happy Monday! Start your week with energy!";
-      }
-
-    if(dayMessage == 'Frday')
-      {
-        dayMessage: "It's Friday! The weekend is near!"
-      }
-
-    else{
-        dayMessage: "Happy Monday! Start your week with energy!";
-      }
-
-
-      return res.json({
-        welcomeMessage: `Hello, ${name}! Welcome to our assistant app!`,
-        dayMessage : dayMessage
+        if(!name){
+      return res.status(400).json({
+        message : "All fileds are required"
       })
 
-  } catch (error) {
+    }
+      // The Below Date().toLocaleDateString is used so that it would extract the current date from calender and 
+      // pop up the message according to the day given , 
+      //Eg :- If the today is Monday = it will display the monday message .   
+      const weekDay = new Date().toLocaleDateString('en-US',{weekday : 'long'});
+      let dayMessage;
 
-    console.log("Failure",error.message)
+      if(weekDay == 'Monday'){
+        dayMessage = "Happy Monday! Start your week with energy!";
+      }
+      if(weekDay == 'Friday'){
+        dayMessage = "It's Friday! The weekend is near!";
+      }
+      if(weekDay == 'Wednesday'){
+        dayMessage = "It's Wednesday! Have a Wonderful Wednesday";
+      }
+      else{
+        dayMessage = "Have a wonderful day!";
+      }
+      return res.status(200).json({
+        welcomeMessage : `Hello, ${name}! Welcome to our assistant app!`,
+        dayMessage :dayMessage,
+        Date : Date() //optional
+      })
+
+      }
     
+  catch (error) {
+    return res.status(500).json({
+      message : 'Something went wrong, The server is unable to fetch',
+      error : error.errors
+    })
   }
 })
 
@@ -91,6 +89,11 @@ app.get('/assistant/greet' , (req,res) => {
 app.listen(PORT, () => {
     console.log(`Virtual Assistant API is running on http://localhost:${PORT}`);
 });
+
+
+
+
+
 
 
 
